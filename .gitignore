@@ -1,2 +1,15 @@
-#ignore pdf files
-*.pdf
+#ignore list
+
+新概念51单片机C语言教程——入门、提高、开发、拓展全攻略.pdf
+*.uvgui.59109
+*.A51
+*.uvopt
+*.uvproj
+*.obj
+*.html
+*.hex
+*.lnp
+*.lst
+*.m51
+WJ-C51/Objects/
+WJ-C51/Listings/

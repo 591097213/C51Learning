@@ -52,7 +52,8 @@
                 "_DEBUG",
                 "UNICODE",
                 "sbit=int",
-                "code=const"
+                "code=const",
+                "bit=bool"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

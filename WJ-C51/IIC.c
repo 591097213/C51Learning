@@ -6,7 +6,8 @@
 #include "delay.h"
 #include "IIC.h"
 
-void I2C_Init() //I2C总线初始化
+void I2C_Init()
+//I2C总线初始化
 {
 	SDA = 1;
 	_nop_();
@@ -36,7 +37,7 @@ void I2C_Stop()
 	Delay5us();
 }
 
-/*1/0：主机发送应答/非应答*/
+/*主机发送应答*/
 void Master_ACK(bit i)
 {
 	SCL = 0; // 拉低时钟总线允许SDA数据总线上的数据变化
@@ -67,7 +68,7 @@ bit Test_ACK() //返回0表示应答失败，1表示应答
 	{
 		SCL = 0;
 		_nop_();
-		I2C_Stop(); //检测应答失败应该关闭总线
+		I2C_Stop();
 		return (0);
 	}
 	else
@@ -100,9 +101,9 @@ void I2C_send_byte(uchar byte)
 		_nop_();
 		byte <<= 1; // 0101 0100B
 	}
-	SCL = 0; //允许数据改变
+	SCL = 0; ///////???????????????????
 	_nop_();
-	SDA = 1; //恢复空闲状态
+	SDA = 1;
 	_nop_();
 }
 
@@ -110,7 +111,7 @@ void I2C_send_byte(uchar byte)
 uchar I2C_read_byte()
 {
 	uchar dat, i;
-	SCL = 0;
+	SCL = 0; //////////????????????????
 	_nop_();
 	SDA = 1;
 	_nop_();
@@ -120,7 +121,7 @@ uchar I2C_read_byte()
 		_nop_();
 		if (SDA)
 		{
-			dat |= 0x01; //0000 0001
+			dat |= 0x01; //
 		}
 		else
 		{

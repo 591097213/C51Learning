@@ -7,14 +7,11 @@ RCK=上沿，锁存移位寄存器中的值
 ***********************************************/
 
 #include <reg52.h>
-
-sbit RCK = P2 ^ 5;   //输出存储器锁存时钟线
-sbit SRCLK = P2 ^ 6; //数据输入时钟线
-sbit SER = P2 ^ 7;   //数据线
+#include "qxmcs51_config.h"
 
 unsigned char code encode[] = {
-	// 0    1     2     3     4     5     6     7     8     9    A     b     C     d     E     F    消影
-	0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71, 0x00};
+	//0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F   消隐
+	0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x00}; //段码
 
 /**
  * 向芯片发送1字节数据
@@ -80,7 +77,7 @@ void dynamic(int cha[], int boo[])
 	}
 }
 
-void main()
+void segmentDisplayExample()
 {
 	int cha1[] = {16, 16, 16, 16, 16, 16, 16, 16};
 	int cha2[] = {8, 8, 8, 8, 8, 8, 8, 8};

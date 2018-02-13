@@ -9,14 +9,16 @@
 	//-------------------------使用说明-------------------------//
 
 **********************************************************************/
+#include "fourChannelAD.h"
 #include "qxmcs51_config.h"
 #include "delay.h"
 #include "LCD1602.h"
 #include "IIC.h"
 #include "PCF8591.H"
 
-void main()
+void fourChannelAD()
 {
+	uchar i = 0;
 	INT8U ADC_Value;
 	LCD1602_Init();						//LCD1602液晶显示器初始化
 	I2C_Init();							//I2C总线初始化
@@ -42,5 +44,9 @@ void main()
 		I2C_ADC_ReadData(0, &ADC_Value);					   //读数据
 		LCD1602_Write_String(12, 1, INT8UtostrHEX(ADC_Value)); // 通道3	  模拟信号输入
 		Delay_Ms(100);										   //延时
+
+		I2C_DAC_WriteData(i); //控制
+		i++;
+		Delay_Ms(20);
 	}
 }

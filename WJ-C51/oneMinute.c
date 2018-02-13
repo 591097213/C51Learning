@@ -1,14 +1,10 @@
-#include <reg52.h>
+#include "qxmcs51_config.h"
 
 const int myTIME = 0.05 / (12.0 / 12000000); //可修改每次中断的计时
 
 unsigned char code encode[] = {
 	//0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F   消隐
 	0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x00}; //段码
-
-sbit RCK = P2 ^ 5;   //输出存储器锁存时钟线
-sbit SRCLK = P2 ^ 6; //数据输入时钟线
-sbit SER = P2 ^ 7;   //数据线
 
 /**
  * 向芯片发送1字节数据
@@ -79,7 +75,7 @@ int boo[] = {0, 0, 0, 0, 0, 0, 0, 0};
 int num = 0;
 int count = 0;
 
-void main()
+void oneMinuteExample()
 {
 	TH0 = (65536 - myTIME) / 256;
 	TL0 = (65536 - myTIME) % 256;

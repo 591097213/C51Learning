@@ -16,6 +16,13 @@ sbit SCL = P2 ^ 1;     //IIC时钟总线
 sbit LED_WE = P2 ^ 6;
 sbit LED_DU = P2 ^ 7;
 
+sbit RCK = P2 ^ 5;   //移位寄存器输出存储器锁存时钟线
+sbit SRCLK = P2 ^ 6; //移位寄存器数据输入时钟线
+sbit SER = P2 ^ 7;   //移位寄存器数据线
+
+sbit BUTTON0 = P3 ^ 0; //独立按键0
+sbit BUTTON1 = P3 ^ 1; //独立按键1
+
 /*********************************************************/
 
 //#define MAIN_Fosc		24000000L	//定义主时钟
@@ -25,7 +32,7 @@ sbit LED_DU = P2 ^ 7;
 //#define MAIN_Fosc		 5529600L	//定义主时钟
 
 /*********************************************************/
-#define AT24C02_ADDR 0xa0 //AT24C02地址 EEPROM 1010 0000
-#define PCF8591_ADDR 0x90 //PCF8591地址 AD_DA芯片 1001 0000
+#define AT24C02_ADDR 0xa0 //AT24C02地址
+#define PCF8591_ADDR 0x90 //PCF8591地址
 
 #endif

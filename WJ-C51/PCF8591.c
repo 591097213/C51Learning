@@ -11,48 +11,52 @@ PCF8591芯片相关
 #define ADC_AutoINC 0x04
 
 /*AD读数据*/
-BOOL I2C_ADC_ReadData(uchar ADDR, uchar *ADC_Value)//ADDR为通道号，ADC_Value为所读到的值.返回0，1表示读取成功与否
+BOOL I2C_ADC_ReadData(uchar ADDR, uchar *ADC_Value) //ADDR为通道号，ADC_Value为所读到的值.返回0，1表示读取成功与否
 {
-	I2C_Start();//启动总线
-	I2C_send_byte(PCF8591_ADDR + 0);//发送设备地址。PCF8591_ADDR为PCF8591地址。在qxmcs51_config.h中。+0表示写入
-	if (!Test_ACK())//测试从设备，即PCF8591应答失败
+	I2C_Start();					 //启动总线
+	I2C_send_byte(PCF8591_ADDR + 0); //发送设备地址。PCF8591_ADDR为PCF8591地址。在qxmcs51_config.h中。+0表示写入
+	if (!Test_ACK())				 //测试从设备，即PCF8591应答失败
 	{
-		return(0);//返回0
+		return (0); //返回0
 	}
-	I2C_send_byte(ADDR);//应答成功，则发送通道号，即读取地址
-	Master_ACK(0);//主机发送应答
+	I2C_send_byte(ADDR); //应答成功，则发送通道号，即读取地址，也就是控制字
+	if (!Test_ACK())	 //测试从设备，即PCF8591应答失败
+	{
+		return (0); //返回0
+	}
 
-	I2C_Start();//启动总线
-	I2C_send_byte(PCF8591_ADDR + 1);//发送PCF8591地址+1表示读取
-	if (!Test_ACK())//应答失败
+	I2C_Start();					 //启动总线
+	I2C_send_byte(PCF8591_ADDR + 1); //发送PCF8591地址+1表示读取
+	if (!Test_ACK())				 //应答失败
 	{
-		return(0);//退出
+		return (0); //退出
 	}
-	*ADC_Value = I2C_read_byte();//否则读数据
-	Master_ACK(0);//主机发送应答
+
+	*ADC_Value = I2C_read_byte(); //读取并赋值
+	Master_ACK(0);				  //主机发送非应答，使芯片停止发送数据
 	I2C_Stop();
-	return(1);	
+	return (1);
 }
 
 /*向AD芯片写数据。数据范围0~255*/
 BOOL I2C_DAC_WriteData(uchar Data)
 {
-	I2C_Start();//启动总线
-	I2C_send_byte(PCF8591_ADDR + 0);//发送设备地址。PCF8591_ADDR为PCF8591地址。在qxmcs51_config.h中。+0表示写入
-		if (!Test_ACK())//测试从设备，即PCF8591应答失败
+	I2C_Start();					 //启动总线
+	I2C_send_byte(PCF8591_ADDR + 0); //发送设备地址。PCF8591_ADDR为PCF8591地址。在qxmcs51_config.h中。+0表示写入
+	if (!Test_ACK())				 //测试从设备，即PCF8591应答失败
 	{
-		return(0);//返回0
+		return (0); //返回0
 	}
-		I2C_send_byte(0x40);//应答成功，则发送控制字，启动DA
-			if (!Test_ACK())//测试从设备，即PCF8591应答失败
+	I2C_send_byte(0x40); //应答成功，则发送控制字，启动DA
+	if (!Test_ACK())	 //测试从设备，即PCF8591应答失败
 	{
-		return(0);//返回0
+		return (0); //返回0
 	}
-			I2C_send_byte(Data);//应答成功，则发送控制字，启动DA
-				if (!Test_ACK())//测试从设备，即PCF8591应答失败
+	I2C_send_byte(Data); //应答成功，则发送数据
+	if (!Test_ACK())	 //测试从设备，即PCF8591应答失败
 	{
-		return(0);//返回0
+		return (0); //返回0
 	}
-		I2C_Stop();
+	I2C_Stop();
 	return (1);
 }

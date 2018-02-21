@@ -1,6 +1,6 @@
-#include "segmentDisplay.h"
+#include "serial.h"
 
 void main()
 {
-    segmentDisplayExample();
+    serialExample();
 }

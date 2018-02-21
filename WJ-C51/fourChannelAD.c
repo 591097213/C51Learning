@@ -16,7 +16,7 @@
 #include "IIC.h"
 #include "PCF8591.H"
 
-void fourChannelAD()
+void fourChannelADExample()
 {
 	uchar i = 0;
 	INT8U ADC_Value;
@@ -44,9 +44,5 @@ void fourChannelAD()
 		I2C_ADC_ReadData(0, &ADC_Value);					   //读数据
 		LCD1602_Write_String(12, 1, INT8UtostrHEX(ADC_Value)); // 通道3	  模拟信号输入
 		Delay_Ms(100);										   //延时
-
-		I2C_DAC_WriteData(i); //控制
-		i++;
-		Delay_Ms(20);
 	}
 }

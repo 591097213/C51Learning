@@ -3,5 +3,6 @@
 
 void flowLampExample();
 void flowLamp(int led);
+void control();
 
 #endif

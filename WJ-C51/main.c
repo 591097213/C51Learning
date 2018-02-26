@@ -1,6 +1,6 @@
-#include "serial.h"
+#include "beep.h"
 
 void main()
 {
-    serialExample();
+    beepExample();
 }

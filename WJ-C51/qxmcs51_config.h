@@ -34,5 +34,6 @@ sbit BUTTON1 = P3 ^ 1; //独立按键1
 /*********************************************************/
 #define AT24C02_ADDR 0xa0 //AT24C02地址
 #define PCF8591_ADDR 0x90 //PCF8591地址
+#define botelv 9600UL     //波特率定义为9600
 
 #endif

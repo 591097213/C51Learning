@@ -47,7 +47,8 @@
             "includePath": [
                 "${workspaceRoot}",
                 "C:/Keil_v5/C51/INC",
-                "${workspaceRoot}/WJ-C51"
+                "${workspaceRoot}/WJ-C51",
+                "C:/Keil_v5/C51/INC/Atmel"
             ],
             "defines": [
                 "_DEBUG",

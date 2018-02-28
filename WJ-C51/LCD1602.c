@@ -227,7 +227,7 @@ void LCD1602_Write_Dat(INT8U dat) //LCD1602写数据
 	_nop_();
 	LCD_EN = 0;
 }
-//y表示第几行。x表示第几个字符。s是字符串指针
+//y=0或1表示第几行。x表示第几个字符，从0开始。s是字符串指针
 void LCD1602_Write_String(INT8U x, INT8U y, INT8U *s) //LCD1602写字符串
 {
 	if (y == 0)

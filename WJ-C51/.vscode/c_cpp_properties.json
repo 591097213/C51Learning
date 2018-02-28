@@ -46,7 +46,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceRoot}",
-                "C:/Keil_v5/C51/INC"
+                "C:/Keil_v5/C51/INC",
+                "C:/Keil_v5/C51/INC/Atmel"
             ],
             "defines": [
                 "_DEBUG",

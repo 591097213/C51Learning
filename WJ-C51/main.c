@@ -1,6 +1,6 @@
-#include "beep.h"
+#include "clock.h"
 
 void main()
 {
-    beepExample();
+    clock();
 }

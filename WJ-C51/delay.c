@@ -49,3 +49,22 @@ void Delay5us()
 	_nop_();
 #endif
 }
+/*延时us*5微秒*/
+void Delay5us(int us)
+{
+	int i;
+#if MAIN_Fosc == 11059200
+	for (i = 0; i < us; i++)
+		_nop_();
+#elif MAIN_Fosc == 12000000
+	for (i = 0; i < us; i++)
+		_nop_()
+#elif MAIN_Fosc == 22118400
+	for (i = 0; i < us; i++)
+	{
+		_nop_();
+		_nop_();
+		_nop_();
+	}
+#endif
+}

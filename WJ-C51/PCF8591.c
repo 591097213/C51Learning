@@ -5,7 +5,6 @@ PCF8591芯片相关
 #include "qxmcs51_config.h"
 #include "delay.h"
 #include "IIC.h"
-#include "PCF8591.H"
 
 #define DAC_EN 0x40
 #define ADC_AutoINC 0x04

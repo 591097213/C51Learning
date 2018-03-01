@@ -1,6 +1,6 @@
-#include "clock.h"
+#include "DS18B20Example.h"
 
 void main()
 {
-    clock();
+    DS18B20Example();
 }

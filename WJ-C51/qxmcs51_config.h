@@ -15,6 +15,7 @@ sbit SDA = P2 ^ 0;     //IIC数据总线
 sbit SCL = P2 ^ 1;     //IIC时钟总线
 sbit LED_WE = P2 ^ 6;
 sbit LED_DU = P2 ^ 7;
+sbit DS = P2 ^ 2; //DS18B20芯片总线引脚
 
 sbit RCK = P2 ^ 5;   //移位寄存器输出存储器锁存时钟线
 sbit SRCLK = P2 ^ 6; //移位寄存器数据输入时钟线

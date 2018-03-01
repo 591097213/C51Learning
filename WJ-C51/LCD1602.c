@@ -5,7 +5,6 @@ LCD显示器相关
 
 #include "qxmcs51_config.h"
 #include "delay.h"
-#include "LCD1602.H"
 #include "datatype.h"
 
 #define LCD1602_DataPort P0 //LCD1602数据端口

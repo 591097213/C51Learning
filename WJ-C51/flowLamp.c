@@ -44,7 +44,10 @@ bit keyscan()
         change = 1;
     return change;
 }
-
+/**
+ * @brief 主程序
+ * 
+ */
 void control()
 {
     s2sta = s2;

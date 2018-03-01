@@ -3,14 +3,13 @@
 				当发送的数据为1到8时，分别对应点亮相应的发光二极管。
 				发送其他数据，蜂鸣器会响。	  注意：波特率9600    发送的时候请选择文本模式
 **********************************************************************************/
-
 #include <reg52.h>
 #include "datatype.h"
 #include "beepOne.h"
 
 uchar buf;
 
-void main(void)
+void serialReceiveExample(void)
 {
     SCON = 0x50; //设定串口工作方式
     PCON = 0x00; //波特率不倍增

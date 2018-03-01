@@ -4,7 +4,6 @@
 
 #include "qxmcs51_config.h"
 #include "delay.h"
-#include "IIC.h"
 
 void I2C_Init()
 //I2C总线初始化

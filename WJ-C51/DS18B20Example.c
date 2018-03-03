@@ -57,16 +57,15 @@ void display(int v)
 
 void DS18B20Example()
 {
-    char *RomChar;
+    char RomChar[17];
 
-    DS18B20_Init();
-    DS18B20_ReadRomCord(); //读序列码
-
-    DS18B20_SendChangeCmd(); //开始温度转化。因为温度转化需要较大时间，故提前开始而不在while循环中才开始
+    DS18B20_SendChangeCmd(); //开始温度转化。因为温度转化需要较大时间，故提前开始而不在while循环中才开始,以避免开机显示第一行后要等一秒才会显示第二行。
+    LCD1602_Init();//马上初始化液晶，以免液晶第一行显示一行黑格子
+    Delay_Ms(1000);
 
     DS18B20_RomChar(RomChar); //将序列码转化为字符串
 
-    LCD1602_Init();
+
     LCD1602_Write_String(0, 0, RomChar);
     while (1)
     {

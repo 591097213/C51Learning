@@ -1,6 +1,8 @@
 /**
  * @brief DS18B20芯片相关
  * 
+ * [注意]DS18B20芯片单总线的延时要求较高，不可随意更改本文件中的时延
+ * 
  * @file DS18B20.c
  * @author your name
  * @date 2018-03-01
@@ -12,7 +14,7 @@
 #include "qxmcs51_config.h"
 
 bit presence;                                                             //芯片存在标志
-uchar data RomCode[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //用于存储64位芯片序列码
+uchar data RomCode[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //用于存储64位芯片序列码28 FF 6F 8F A0 16 04 A4
 uchar crc;                                                                //存放校验和
 
 /**
@@ -46,9 +48,11 @@ bit DS18B20_Init() //初始化
  */
 bit DS18B20_ReadBit()
 {
+    uchar i;
     DS = 0; //将DS 拉低开始读时间隙
     DS = 1; // then return high
-    Delay(3);
+    for (i = 0; i < 3; i++)
+        ;
     return (DS); // 返回 DS 线上的电平值
 }
 
@@ -161,7 +165,7 @@ int DS18B20_GetTmpValue()
  * @brief 读芯片64位序列码
  * 
  */
-void DS18B20_ReadRomCord(void)
+void DS18B20_ReadRomCord()
 {
     uchar j;
     DS18B20_Init();
@@ -170,6 +174,45 @@ void DS18B20_ReadRomCord(void)
     {
         RomCode[j] = DS18B20_ReadByte();
     }
+}
+
+/**
+ * @brief 将8字节序列码转化为16个16进制字符
+ * 
+ */
+void DS18B20_RomChar(char *RomChar)
+{
+
+    uchar i, temp, j;
+
+    DS18B20_ReadRomCord(); //读取芯片序列号
+
+
+    for (i = 0; i < 8; i++)
+    {
+        temp = ((RomCode[i] & 0xf0) >> 4); //取每一字节的高4位
+        if (temp > 9)
+        {
+            RomChar[j] = temp + 0x37;
+        }
+        else
+        {
+            RomChar[j] = temp + 0x30;
+        }
+        j++;
+
+        temp = (RomCode[i] & 0x0f); //取每一字节的低4位
+        if (temp > 9)
+        {
+            RomChar[j] = temp + 0x37;
+        }
+        else
+        {
+            RomChar[j] = temp + 0x30;
+        }
+        j++;
+    }
+    RomChar[j] = '\0';
 }
 
 /**
@@ -201,41 +244,4 @@ uchar DS18B20_CRC8()
         }
     }
     return crc;
-}
-
-/**
- * @brief 将8字节序列码转化为16个16进制字符
- * 
- */
-void DS18B20_RomChar(char *RomChar)
-{
-
-    uchar i, j, temp;
-    j = 0;
-
-    for (i = 0; i < 8; i++)
-    {
-        temp = (RomCode[i] & 0xf0 >> 4); //取每一字节的高4位
-        if (temp > 9)
-        {
-            *RomChar = temp + 0x37;
-        }
-        else
-        {
-            *RomChar = temp + 0x30;
-        }
-        RomChar++;
-
-        temp = (RomCode[i] & 0x0f); //取每一字节的低4位
-        if (temp > 9)
-        {
-            *RomChar = temp + 0x37;
-        }
-        else
-        {
-            *RomChar = temp + 0x30;
-        }
-        RomChar++;
-    }
-    *RomChar = '\0';
 }

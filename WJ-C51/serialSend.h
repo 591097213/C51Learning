@@ -1,5 +1,5 @@
-#ifndef __ZHIFUCHUAN_H
-#define __ZHIFUCHUAN_H
+#ifndef __SERIALSEND_H
+#define __SERIALSEND_H
 
 void zifuchuanExample();
 void sendc(unsigned char *pd);

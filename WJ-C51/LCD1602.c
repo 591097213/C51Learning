@@ -11,6 +11,8 @@ LCD显示器相关
 
 //INT8U strDEC[4]; //将一个字节的数据转换为10进制字符串
 INT8U strHEX[3]; //INT8UtostrHEX函数将一个字节的数据转换为16进制字符串。strHEX为全局变量，16进制字符地址
+uchar str[4];	//uchartostr函数转换的字符串 同时可以把16进制转成10进制
+
 /*
 //将一字节数据转换为10进制字符串
 INT8U *INT8UtostrDEC(INT8U num)
@@ -169,6 +171,45 @@ INT8U *INT8UtostrHEX(INT8U num) //将一个字节的数据转换为16进制字�
 	}
 	strHEX[i] = '\0';
 	return (strHEX);
+}
+/**
+ * @brief 将一个字节的数据转换为10进制字符串 
+ * 
+ * 转化后范围为0~255，不含前导0
+ * 【注意】
+ * 		可能会出现的问题：先向LCD写入"10",然后向LCD写入“9”，由于“0”未被擦除，故会显示为“90”.
+ * 		因此该函数采用空格填充，使转化后的结果等长。
+ * @param num 
+ * @return uchar* 
+ */
+uchar *uchartostr(uchar num) //
+{
+	uchar x2, x1, x0, i;
+	x2 = num / 100;
+	x1 = num % 100 / 10;
+	x0 = num % 100 % 10;
+	i = 0;
+	if (x2 != 0)
+	{
+		str[i] = x2 + 48;
+		i++;
+		str[i] = x1 + 48;
+		i++;
+	}
+	else if (x1 != 0)
+	{
+		str[i] = x1 + 48;
+		i++;
+	}
+	str[i] = x0 + 48;
+	while (i < 2) //用空格填充，使数据等长
+	{
+		i++;
+		str[i] = ' ';
+	}
+	i++;
+	str[i] = '\0';
+	return str;
 }
 
 BOOL LCD1602_Check_Busy() //LCD1602忙判断

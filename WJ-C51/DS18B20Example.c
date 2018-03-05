@@ -14,7 +14,6 @@
 #include "LCD1602.h"
 #include "DS18B20.h"
 #include "delay.h"
-#include "serialSend.h"
 
 void DS18B20Example()
 {

@@ -13,7 +13,6 @@
 #include "datatype.h"
 #include "delay.h"
 #include "qxmcs51_config.h"
-#include "serialSend.h"
 
 bit presence;                                                             //芯片存在标志
 uchar data RomCode[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //用于存储64位芯片序列码28 FF 6F 8F A0 16 04 A4
@@ -134,12 +133,10 @@ void DS18B20_SendReadCmd()
 
 /**
  * @brief 获得温度值
- * 返回的温度值是int类型（方便将各个位转化为字符供显示）
- * 其中该返回值包含两位小数，也就是说返回值/100后才是真实值。转化为字符串时记得添加小数点
  * 
- * @return int 
+ * @return float 
  */
-int DS18B20_GetTmpValue()
+float DS18B20_GetTmpValue()
 {
     uint tmpvalue;
     int value;
@@ -157,10 +154,7 @@ int DS18B20_GetTmpValue()
 
     t = value * 0.0625; //转化为摄氏度.t是浮点数类型
 
-    //t共有4位小数
-    //因为最终返回的是int类型的值，*100然后再通过类型转化，删去末两位小数，以保留两位小数。调用该函数获得的返回值记得/100。
-    value = t * 100 + (value > 0 ? 0.5 : -0.5); //大于0加0.5, 小于0减0.5。*100用于控制精度。加减0.5是四舍五入。
-    return value;
+    return t;
 }
 
 /**
@@ -187,12 +181,7 @@ void DS18B20_RomChar(char *RomChar)
 
     uchar i, temp, j;
 
-    // init();
-
     DS18B20_ReadRomCord(); //读取芯片序列号
-    sendc(RomCode);
-    while (1)
-        ;
 
     for (i = 0; i < 8; i++)
     {
@@ -200,12 +189,10 @@ void DS18B20_RomChar(char *RomChar)
         if (temp > 9)
         {
             RomChar[j] = temp + 0x37;
-            // send(RomChar[j]);
         }
         else
         {
             RomChar[j] = temp + 0x30;
-            // send(RomChar[j]);
         }
         j++;
 
@@ -213,19 +200,14 @@ void DS18B20_RomChar(char *RomChar)
         if (temp > 9)
         {
             RomChar[j] = temp + 0x37;
-            // send(RomChar[j]);
         }
         else
         {
             RomChar[j] = temp + 0x30;
-            // send(RomChar[j]);
         }
         j++;
     }
     RomChar[j] = '\0';
-
-    // for (i = 0; i < 8; i++)
-    //     send(RomChar[i]);
 }
 
 /**
@@ -233,14 +215,22 @@ void DS18B20_RomChar(char *RomChar)
  * 
  * 转化过程中已考虑了正负号、小数点、前导0等
  * 
- * @param v 需要转化的数据
+ * @param t 需要转化的数据
  * @param str 转化后的字符串。需要至少8字节空间（5位数字+1位小数点+1位符号+'\0'）
  */
-void DS18B20_temperToStr(int v, char *str)
+void DS18B20_temperToStr(float t, char *str)
 {
     uchar count, j;
+    uint tmp;
     uchar datas[] = {0, 0, 0, 0, 0}; //读取到的值连同小数最多5位
-    uint tmp = abs(v);               //取绝对值
+    int v;
+
+    //t共有4位小数
+    //因为最终返回的是int类型的值，*100然后再通过类型转化，删去末两位小数，以保留两位小数。调用该函数获得的返回值记得/100。
+
+    v = t * 100 + (t > 0 ? 0.5 : -0.5); //大于0加0.5, 小于0减0.5。*100用于控制精度。加减0.5是四舍五入。
+
+    tmp = abs(v); //取绝对值
     datas[0] = tmp / 10000;
     datas[1] = tmp % 10000 / 1000;
     datas[2] = tmp % 1000 / 100;

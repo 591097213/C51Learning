@@ -1,6 +1,6 @@
-#include "DS18B20Example.h"
+#include "DS18B20Example0.h"
 
 void main()
 {
-	DS18B20Example();
+	DS18B20Example0();
 }

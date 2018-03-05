@@ -33,7 +33,7 @@ void key()
     Key_value = Key_value & 0x0f;
     if (Key_value != 0x0f) //如果有按键被按下
     {
-        Delay_Ms(5);
+        Delay_Ms(10);
         if (Key_value != 0x0f)
         {
             switch (Key_value)
@@ -64,7 +64,11 @@ void key()
  */
 void DS18B20Example0()
 {
-    uchar i;
+    float i;
+    char temp[8];
+
+    DS18B20_SendChangeCmd();
+
     LCD1602_Init();
 
     LCD1602_Write_Com(0x80 + 0 + 3); //写位置指针
@@ -72,17 +76,19 @@ void DS18B20Example0()
     LCD1602_Write_Com(0x80 + 0 + 8);
     LCD1602_Write_Dat('L');
 
-    LCD1602_Write_String(0, 0, "Temperature:");
+    LCD1602_Write_String(0, 1, "TEMP:");
+    Delay_Ms(1000);
 
     H = 40;
     L = 10;
     while (1)
     {
+        i = DS18B20_GetTmpValue(); //获取温度值float类型
         DS18B20_SendChangeCmd();
-        i = get_temperature();
-        LCD1602_Write_String(0, 14, uchartostr(i));
-        lcd_dis(0, 5, uchartostr(H));
-        lcd_dis(0, 10, uchartostr(L));
+        DS18B20_temperToStr(i, temp);               //将温度值转化为string
+        LCD1602_Write_String(7, 1, temp);           //写温度
+        LCD1602_Write_String(5, 0, uchartostr(H));  //写H
+        LCD1602_Write_String(10, 0, uchartostr(L)); //写L
         if (i >= H || i <= L)
         {
             beep = 0;
@@ -92,5 +98,6 @@ void DS18B20Example0()
             beep = 1;
         }
         key();
+        Delay_Ms(200);
     }
 }

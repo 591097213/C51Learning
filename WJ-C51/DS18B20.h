@@ -12,5 +12,8 @@ int DS18B20_GetTmpValue();
 DS18B20_ReadRomCord(void);
 uchar DS18B20_CRC8();
 void DS18B20_RomChar(char *RomChar);
+void DS18B20_GetTmpStr(char *str);
+void DS18B20_temperToStr(int v, char *str);
+
 
 #endif

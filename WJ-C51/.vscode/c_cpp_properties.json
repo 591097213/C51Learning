@@ -54,7 +54,7 @@
                 "UNICODE",
                 "sbit=int",
                 "code=const",
-                "bit=bool"
+                "bit=int"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

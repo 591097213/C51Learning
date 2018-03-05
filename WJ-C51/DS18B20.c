@@ -9,9 +9,11 @@
  */
 
 #include <reg52.H>
+#include <math.h>
 #include "datatype.h"
 #include "delay.h"
 #include "qxmcs51_config.h"
+#include "serialSend.h"
 
 bit presence;                                                             //芯片存在标志
 uchar data RomCode[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //用于存储64位芯片序列码28 FF 6F 8F A0 16 04 A4
@@ -185,8 +187,12 @@ void DS18B20_RomChar(char *RomChar)
 
     uchar i, temp, j;
 
-    DS18B20_ReadRomCord(); //读取芯片序列号
+    // init();
 
+    DS18B20_ReadRomCord(); //读取芯片序列号
+    sendc(RomCode);
+    while (1)
+        ;
 
     for (i = 0; i < 8; i++)
     {
@@ -194,10 +200,12 @@ void DS18B20_RomChar(char *RomChar)
         if (temp > 9)
         {
             RomChar[j] = temp + 0x37;
+            // send(RomChar[j]);
         }
         else
         {
             RomChar[j] = temp + 0x30;
+            // send(RomChar[j]);
         }
         j++;
 
@@ -205,14 +213,74 @@ void DS18B20_RomChar(char *RomChar)
         if (temp > 9)
         {
             RomChar[j] = temp + 0x37;
+            // send(RomChar[j]);
         }
         else
         {
             RomChar[j] = temp + 0x30;
+            // send(RomChar[j]);
         }
         j++;
     }
     RomChar[j] = '\0';
+
+    // for (i = 0; i < 8; i++)
+    //     send(RomChar[i]);
+}
+
+/**
+ * @brief 将DS18B20_GetTmpValue()获取的数据转化成字符串储存在str中
+ * 
+ * 转化过程中已考虑了正负号、小数点、前导0等
+ * 
+ * @param v 需要转化的数据
+ * @param str 转化后的字符串。需要至少8字节空间（5位数字+1位小数点+1位符号+'\0'）
+ */
+void DS18B20_temperToStr(int v, char *str)
+{
+    uchar count, j;
+    uchar datas[] = {0, 0, 0, 0, 0}; //读取到的值连同小数最多5位
+    uint tmp = abs(v);               //取绝对值
+    datas[0] = tmp / 10000;
+    datas[1] = tmp % 10000 / 1000;
+    datas[2] = tmp % 1000 / 100;
+    datas[3] = tmp % 100 / 10;
+    datas[4] = tmp % 10;
+
+    j = 0;
+
+    if (v < 0) //写入符号
+    {
+        str[j++] = '-';
+    }
+    else
+    {
+        str[j++] = '+';
+    }
+
+    if (datas[0] != 0) //处理前置0
+    {
+        str[j++] = '0' + datas[0];
+    }
+    for (count = 1; count != 5; count++)
+    {
+        str[j++] = '0' + datas[count];
+        if (count == 2)
+        {
+            str[j++] = '.'; //小数点
+        }
+    }
+    str[j] = '\0';
+}
+
+/**
+ * @brief 直接获取温度字符串，方便输出、调用
+ * 
+ * @param str 存储字符串的指针。至少需要8字节
+ */
+void DS18B20_GetTmpStr(char *str)
+{
+    DS18B20_temperToStr(DS18B20_GetTmpValue(), str);
 }
 
 /**

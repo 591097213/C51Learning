@@ -50,8 +50,8 @@ void Delay5us()
 }
 /**
  * @brief 延时
- * 
- * @param num 
+ *
+ * @param num
  */
 void Delay(unsigned int num)
 {

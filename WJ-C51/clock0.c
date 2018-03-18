@@ -42,10 +42,11 @@ void disp(uchar dispadd)
 /**
  * @brief 扫描矩阵键盘，返回扫描码
  * 扫描码约定：
+ * “1”为有效
  * 高四位从低→高表示按键1~4
  * 低四位从低→高表示第1~4行
- * 按键未按下着返回0
- * @return uchar 
+ * 所有按键未被按下则返回0
+ * @return uchar
  */
 uchar keypro(void)
 { //采用矩阵按键。P30~P33行线，P34~P37列线

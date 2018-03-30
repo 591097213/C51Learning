@@ -1,6 +1,6 @@
-#include "1602calendar.h"
+#include "infrared1602Example.h"
 
 void main()
 {
-	LCD1602calendar();
+	infrared1602Example();
 }

@@ -1,9 +1,10 @@
 #ifndef __DELAY_H
 #define __DELAY_H
 
+#include "datatype.h"
 
-void Delay_Ms(INT16U ms);
+void Delay_Ms(INT16U);
 void Delay5us();
-void Delay(unsigned int num);
+void Delay(uint);
 
 #endif

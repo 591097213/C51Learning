@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "flowlampexample.h": "c"
+        "flowlampexample.h": "c",
+        "lcd1602.h": "c",
+        "qxmcs51_config.h": "c",
+        "ds18b20.h": "c",
+        "datatype.h": "c",
+        "ds1302.h": "c",
+        "delay.h": "c"
     }
 }
